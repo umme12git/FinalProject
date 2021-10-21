@@ -1,0 +1,188 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <div id="demo" style="background-color:cyan;  width: 1000px; height:auto; padding-top:10px">
+        <p class="result"></p>
+        <p class="by" style="text-align:right;font-style:italic;"></p>
+    </div>
+    <script>
+        const settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "https://quotes15.p.rapidapi.com/quotes/random/",
+            "method": "GET",
+            "headers": {
+                "x-rapidapi-host": "quotes15.p.rapidapi.com",
+                "x-rapidapi-key": "cc8a623f1emsh7ea7b30e1c6596ep1e2de8jsn2334cb368ffe"
+            }
+        };
+
+        $.ajax(settings).done(function (response) {
+            console.log(response);
+            var cont = response.content;
+            var origin = response.originator.name;
+            $(".result").append(cont);
+            $(".by").append(origin);
+
+        });
+
+    </script>
+    <br />
+    <h4 style="text-align:center">Food and Recipe infomation</h4>
+    <br />
+    <div id="demo1" style="background-color:aquamarine; width: 1000px; height:100px;">
+        <ul class="foodresult" style = "list-style-type:none;"></ul>
+
+        <script>
+            const setting = {
+                "async": true,
+                "crossDomain": true,
+                "url": "https://calorieninjas.p.rapidapi.com/v1/nutrition?query=tomato",
+                "method": "GET",
+                "headers": {
+                    "x-rapidapi-host": "calorieninjas.p.rapidapi.com",
+                    "x-rapidapi-key": "cc8a623f1emsh7ea7b30e1c6596ep1e2de8jsn2334cb368ffe"
+                }
+            };
+
+            $.ajax(setting).done(function (response) {
+                console.log(response);
+                var info = response.items;
+                $.each(info, function (i, info) {
+                    $(".foodresult").append('<li>' + info.name + ' has' + ' calories: ' + info.calories + '   ' + 'sugar in gram: ' +
+                        info.sugar_g + '   ' + 'fiber in gram: ' + info.fiber_g + '</li>');
+                });
+
+            });
+        </script>
+    </div>
+    <br />
+    <div id="demo2" style="background-color:lightblue; width: 1000px; height:200px;">
+        <p class="quickresult"></p>
+        <img class="picture">
+
+        <script>
+            const sets = {
+                "async": true,
+                "crossDomain": true,
+                "url": "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/quickAnswer?q=Vitamin%20c%20%20in%202%20oranges",
+                "method": "GET",
+                "headers": {
+                    "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+                    "x-rapidapi-key": "cc8a623f1emsh7ea7b30e1c6596ep1e2de8jsn2334cb368ffe"
+                }
+            };
+
+            $.ajax(sets).done(function (response) {
+                console.log(response);
+
+                var ans = response.answer;
+                $(".quickresult").append(ans);
+                var picurl = response.image;
+                $(".picture").attr('src', picurl);
+            });
+        </script>
+    </div>
+
+    <br />
+    <div id="demo3" style="background-color:lightsteelblue; width: 1000px; height:300px;">
+
+        <a class=" ancor">ingredient link</a>
+        <p class="queryresultDish"></p>
+        <img class="picture1query" />
+        <br />
+        <br />
+        <p class=" queryresultIngredient"></p>
+        <img class="picture2query" />
+        <p class ="analyzeRecipe"></p>
+
+        <script>
+            const setts = {
+                "async": true,
+                "crossDomain": true,
+                "url": "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/queries/analyze?q=salmon%20with%20nuts",
+                "method": "GET",
+                "headers": {
+                    "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+                    "x-rapidapi-key": "cc8a623f1emsh7ea7b30e1c6596ep1e2de8jsn2334cb368ffe"
+                }
+            };
+            
+
+            $.ajax(setts).done(function (response) {
+            console.log(response);
+            let url = new URL("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/queries/analyze?q=salmon%20with%20nuts");
+            let params = new URLSearchParams(url.search);
+            console.log(params.toString());
+            var parameters = params.toString();
+               
+            var info = response.ingredients;
+            var pictur1 = response.dishes[0].image;
+            var pictur2 = response.ingredients[0].image;
+            var name1 = response.dishes[0].name;
+            var name2 = response.ingredients[0].name;
+            var incld = response.ingredients[0].include;
+            $.each(info, function (i, info) {
+                $(".ancor").attr('href', 'https://spoonacular.com/cdn/ingredients_100x100/' + info.image);
+            });
+
+            $(".queryresultDish").append("Name: " + name1);
+            $(".picture1query").attr('src', pictur1);
+                
+            $(".picture2query").attr('src', ("https://spoonacular.com/cdn/ingredients_100x100/" + pictur2));
+            $(".queryresultIngredient").append("Ingredient Name: " + name2 + " Include: " + incld);
+           
+            $(".analyzeRecipe").append("Analyze recipe query " + parameters);
+         });
+    </script>
+    </div>
+
+    <br />
+    <div id="demo4" style="background-color:powderblue; width: 1000px; height:1200px;">
+        <h6 class=" burgerHeading" style="text-align:center; ">Burgers from restaurants</h6>
+        <ul class=" restaurantinfo" align = center style="list-style-type:none; ">
+        </ul>
+        <br />
+       
+        <script>
+            const sett = {
+                "async": true,
+                "crossDomain": true,
+                "url": "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/menuItems/search?query=burger&offset=0&number=10&minCalories=100&maxCalories=1000&minProtein=20&maxProtein=100&minFat=10&maxFat=100&minCarbs=30&maxCarbs=100",
+                "method": "GET",
+                "headers": {
+                    "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+                    "x-rapidapi-key": "cc8a623f1emsh7ea7b30e1c6596ep1e2de8jsn2334cb368ffe"
+                }
+            };
+
+            $.ajax(sett).done(function (response) {
+                console.log(response);
+           
+
+                var info = response.menuItems;
+                var name = response.title;
+                var restaurnt = response.restaurantChain;
+               
+                $.each(info, function (i, info) {
+                    $(".restaurantinfo").append('<li> Food Name: ' + info.title + '  RestaurantChain: ' + info.restaurantChain + "<img src = '"+info.image+"'  width = '"+100+"' height = '"+100+"' />" + '</li>');
+                    
+                });
+                
+            });
+
+        </script>
+
+    </div>
+
+
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+</div>
